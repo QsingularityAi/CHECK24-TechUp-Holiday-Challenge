@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  mallorca-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mallorca-travel-backend
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      # Server configuration
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3000
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - REQUEST_TIMEOUT=${REQUEST_TIMEOUT:-30000}
+      - MAX_REQUEST_SIZE=${MAX_REQUEST_SIZE:-10mb}
+      
+      # Data paths (mounted volumes)
+      - OFFERS_DATA_PATH=/app/data/offers.csv
+      - HOTELS_DATA_PATH=/app/data/hotels.csv
+    
+    volumes:
+      # Mount data directory for CSV files
+      - ${DATA_PATH:-./data}:/app/data:ro
+      
+      # Optional: Mount logs directory
+      - ${LOGS_PATH:-./logs}:/app/logs
+    
+    restart: unless-stopped
+    
+    # Resource limits for production
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2.0'
+        reservations:
+          memory: 2G
+          cpus: '1.0'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

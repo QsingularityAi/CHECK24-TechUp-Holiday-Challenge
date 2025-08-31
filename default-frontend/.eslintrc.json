@@ -1,0 +1,12 @@
+{
+  "extends": "next/core-web-vitals",
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "globals": {
+    "HTMLInputElement": "readonly",
+    "window": "readonly"
+  }
+}

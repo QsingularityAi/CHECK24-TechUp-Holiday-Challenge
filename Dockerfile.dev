@@ -1,0 +1,32 @@
+# Development Dockerfile for faster iteration
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm ci --no-audit
+
+# Copy TypeScript configuration
+COPY tsconfig.json ./
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 -G nodejs
+
+# Create directories and set permissions
+RUN mkdir -p /app/data /app/logs && \
+    chown -R nodejs:nodejs /app
+
+# Switch to non-root user
+USER nodejs
+
+# Expose port
+EXPOSE 3000
+
+# Set development environment
+ENV NODE_ENV=development
+
+# Start in development mode
+CMD ["npm", "run", "dev"]
