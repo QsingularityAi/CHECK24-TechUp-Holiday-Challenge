@@ -19,14 +19,14 @@ This guide covers deployment options for the Mallorca Travel Backend, from local
 ### System Requirements
 
 **Minimum Requirements:**
-- CPU: 4 cores
-- RAM: 8GB
+- CPU: 8 cores
+- RAM: 24GB
 - Storage: 50GB SSD
 - Network: 1Gbps
 
 **Recommended for Production:**
 - CPU: 8+ cores
-- RAM: 16GB+
+- RAM: 32GB+
 - Storage: 100GB+ NVMe SSD
 - Network: 10Gbps
 
@@ -43,7 +43,7 @@ This guide covers deployment options for the Mallorca Travel Backend, from local
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/QsingularityAi/CHECK24-TechUp-Holiday-Challenge.git
 cd CHECK24-TechUp-Holiday-Challenge
 
 # Install dependencies
